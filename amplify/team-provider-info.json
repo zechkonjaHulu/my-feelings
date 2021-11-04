@@ -10,6 +10,18 @@
       "StackName": "amplify-myfeelings-dev-103559",
       "StackId": "arn:aws:cloudformation:eu-central-1:181911108242:stack/amplify-myfeelings-dev-103559/a0624490-3d52-11ec-a018-063054d0ac00",
       "AmplifyAppId": "dg2iom1utlr8b"
+    },
+    "categories": {
+      "auth": {
+        "cognitoeded39dd": {},
+        "myfeelings7cd9c29d": {}
+      },
+      "function": {
+        "myfeelingsitems": {
+          "deploymentBucketName": "amplify-myfeelings-dev-103559-deployment",
+          "s3Key": "amplify-builds/myfeelingsitems-6b5966374a5274315a6a-build.zip"
+        }
+      }
     }
   }
 }

@@ -1,9 +1,26 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from 'styles/Home.module.css'
-import NextLink from 'next/link';
+import Head from "next/head";
+import Image from "next/image";
+import styles from "styles/Home.module.css";
+import NextLink from "next/link";
+import { Amplify, withSSRContext } from "aws-amplify";
+import { AmplifySignOut } from "@aws-amplify/ui-react";
+import awsExports from "aws-exports";
+import { useState } from "react";
+import {listNotes} from "../graphql/queries";
 
-export default function Home() {
+Amplify.configure({ ...awsExports, ssr: true });
+
+export async function getServerSideProps({ req }) {
+  const SSR = withSSRContext({ req });
+  const response = await SSR.API.graphql({
+    query: listNotes,
+  });
+  return { props: {data: response.data } };
+}
+
+export default function Home(props) {
+  const { data } = props;
+  const [notes, setNotes] = useState(data.listNotes.items);
   return (
     <div className={styles.container}>
       <Head>
@@ -14,12 +31,16 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">My Feelings</a>
+          <a href="https://nextjs.org">My Feelings</a>
         </h1>
-        <NextLink href="/about" >about</NextLink>
+        <NextLink href="/about">about</NextLink>
+        <AmplifySignOut />
 
+        {notes.map((item,i) => {
+          return <p className={styles.description} key={i}>{item.title} - isCompleted: {item.isComplete ? 'true': 'false'}</p>;
+        })}
         <p className={styles.description}>
-          Get started by editing{' '}
+          Get started by editing{" "}
           <code className={styles.code}>pages/index.jsx</code>
         </p>
 
@@ -60,12 +81,12 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
+  );
 }
