@@ -37,7 +37,7 @@ export default function Home(props) {
         <AmplifySignOut />
 
         {notes.map((item,i) => {
-          return <p className={styles.description} key={i}>{item.title} - isCompleted: {item.isComplete ? 'true': 'false'}</p>;
+          return <p key={i}>{item.title} - isCompleted: {item.isComplete ? 'true': 'false'}</p>;
         })}
         <p className={styles.description}>
           Get started by editing{" "}
